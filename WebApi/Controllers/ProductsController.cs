@@ -51,6 +51,24 @@ namespace WebApi.Controllers
             await context.SaveChangesAsync();
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Product>> Put(int id, [FromBody] ProductUpdateDto productUpdateDto)
+        {
+            var entity = await context.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(entity == null) return NotFound($"No se encontró el Producto con id = {id}");
+
+            entity.Code = productUpdateDto.Code;
+            entity.Name = productUpdateDto.Name;
+            entity.Description = productUpdateDto.Description;
+            entity.Stock = productUpdateDto.Stock;
+
+            context.Products.Update(entity);
+            await context.SaveChangesAsync();
+
+            return Ok(entity);
+        }
+
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
