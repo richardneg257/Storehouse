@@ -25,6 +25,16 @@ namespace WebApi.Controllers
             return products;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetById(int id)
+        {
+            var product = await context.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(product == null) return NotFound();
+
+            return product;
+        }
+
         [HttpPost]
         public async Task Post([FromBody] ProductCreationDto productCreationDto)
         {
