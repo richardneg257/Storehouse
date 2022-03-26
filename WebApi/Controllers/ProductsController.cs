@@ -50,5 +50,19 @@ namespace WebApi.Controllers
             context.Products.Add(productEntity);
             await context.SaveChangesAsync();
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var entity = await context.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (entity == null) return NotFound();
+
+            context.Products.Remove(entity);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
